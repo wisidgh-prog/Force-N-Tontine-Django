@@ -1,0 +1,9 @@
+# Environnement Python / Backend
+env/
+_pycache_/
+*.pyc
+
+# Dépendances Node.js / Frontend
+node_modules/
+dist/
+.env
