@@ -1,0 +1,488 @@
+================================================================
+  GUIDE DE TRAVAIL EN ÉQUIPE
+  Projet : Force-N-Tontine (Backend Django)
+================================================================
+
+Ce guide explique pas à pas comment travailler sur le projet.
+À lire une fois entièrement, puis à garder sous la main.
+
+Dépôt GitHub :
+https://github.com/wisidgh-prog/Force-N-Tontine-Django
+
+Règle importante :
+  - On travaille POUR LE MOMENT uniquement dans le dossier Backend/
+  - On ne travaille JAMAIS directement sur la branche main
+  - On fait toujours une branche, puis une Pull Request
+
+
+================================================================
+1. CE QU'IL FAUT AVANT DE COMMENCER
+================================================================
+
+Sur ton PC, tu dois avoir :
+
+  [ ] Un compte GitHub
+  [ ] Git installé
+  [ ] Python installé
+  [ ] Django 5.2.17 installé (version commune de l'équipe)
+  [ ] Être ajouté comme collaborateur du dépôt
+      (demande au chef de projet de t'ajouter :
+       GitHub > Settings > Collaborators > Add people)
+
+Vérifier que Git et Python sont installés :
+  Ouvre un terminal et tape :
+
+      git --version
+      python --version
+
+  Si tu vois un numéro de version, c'est bon.
+  Sinon, il faut installer Git et Python avant de continuer.
+
+
+----------------------------------------------------------------
+1.1 Ouvrir un terminal
+----------------------------------------------------------------
+
+Sur Windows, le plus simple :
+
+  - Touche Windows
+  - Tape : Git Bash
+  - Appuie sur Entrée
+
+Ou bien dans VS Code :
+  - Menu Terminal > Nouveau terminal
+
+Toutes les commandes de ce guide se tapent dans ce terminal.
+Copie-colle la commande, puis appuie sur Entrée.
+
+
+================================================================
+2. CONFIGURER SON IDENTITÉ GIT (UNE SEULE FOIS)
+================================================================
+
+Git doit savoir qui tu es. Tape (avec tes vraies infos) :
+
+    git config --global user.name "Ton Prénom Nom"
+    git config --global user.email "ton.email@exemple.com"
+
+Exemple :
+
+    git config --global user.name "Wisdom Marcel"
+    git config --global user.email "wisdom@gmail.com"
+
+Utilise l'email de ton compte GitHub.
+
+
+================================================================
+3. RÉCUPÉRER LE PROJET SUR SON PC (UNE SEULE FOIS)
+================================================================
+
+Choisis un dossier de travail, par exemple Documents.
+
+    cd ~/Documents
+    git clone https://github.com/wisidgh-prog/Force-N-Tontine-Django.git
+    cd Force-N-Tontine-Django
+
+Tu dois maintenant voir les dossiers :
+    Backend/
+    Frontend/
+    .gitignore
+    README.md
+    GUIDE_EQUIPE.txt
+
+ATTENTION : ne fais PAS "git init" dans ce dossier.
+Le dépôt est déjà initialisé, il ne faut pas le recréer.
+
+
+----------------------------------------------------------------
+3.1 Authentification GitHub
+----------------------------------------------------------------
+
+Au premier "git push", Git va demander :
+
+    Username : ton nom d'utilisateur GitHub
+    Password : un TOKEN (pas ton mot de passe GitHub)
+
+Créer le token :
+  1. Va sur GitHub
+  2. Clique sur ta photo > Settings
+  3. Tout en bas : Developer settings
+  4. Personal access tokens > Tokens (classic)
+  5. Generate new token (classic)
+  6. Note : "Projet Tontine"
+  7. Expiration : 90 jours
+  8. Coche la case "repo"
+  9. Generate token
+  10. COPIE le token affiché (il ne s'affiche qu'une seule fois)
+
+Colle ce token comme mot de passe quand Git le demande.
+
+  IMPORTANT : ne partage jamais ce token avec personne.
+
+
+================================================================
+4. ENVIRONNEMENT PYTHON (DÉJÀ FAIT — RÉFÉRENCE SEULEMENT)
+================================================================
+
+STATUT ACTUEL :
+  Chaque membre de l'équipe a DÉJÀ créé son environnement virtuel.
+  => Si c'est déjà fait chez toi, PASSE DIRECTEMENT À L'ÉTAPE 5.
+  => NE RECRÉE PAS le dossier env/ : cela pourrait casser ton
+     installation actuelle.
+
+Cette section sert uniquement de référence :
+  - pour un nouveau membre qui rejoint le projet
+  - ou si tu dois réinstaller ton environnement
+
+Chaque personne a SON PROPRE environnement virtuel.
+On ne partage pas le dossier env/ : il est ignoré par Git.
+
+VERSION DJANGO DE L'ÉQUIPE : 5.2.17
+  Tout le monde a installé cette même version. C'est la version
+  officielle du projet : ne pas installer une autre version.
+  Si tu dois réinstaller Django, fais :
+
+      pip install django==5.2.17
+
+    cd Backend
+    python -m venv env
+
+Activer l'environnement :
+
+    Windows (Git Bash) :
+        source env/Scripts/activate
+
+    Windows (PowerShell) :
+        env\Scripts\activate
+
+    Windows (cmd) :
+        env\Scripts\activate.bat
+
+Tu dois voir (env) au début de la ligne du terminal.
+
+Installer Django :
+
+    python -m pip install --upgrade pip
+    pip install django
+
+Si un fichier requirements.txt existe plus tard :
+
+    pip install -r requirements.txt
+
+Vérifier la version de Django (doit afficher 5.2.17) :
+
+    python -m django --version
+
+Résultat attendu : 5.2.17
+Si tu vois une autre version, préviens l'équipe avant de continuer.
+
+
+================================================================
+5. LE TRAVAIL QUOTIDIEN (À FAIRE À CHAQUE FOIS)
+================================================================
+
+Résumé :
+  1. Se mettre à jour
+  2. Créer une branche
+  3. Coder
+  4. Enregistrer (commit)
+  5. Envoyer (push)
+  6. Ouvrir une Pull Request
+
+
+----------------------------------------------------------------
+5.1 Se mettre à jour
+----------------------------------------------------------------
+
+Avant de commencer, récupère le travail des autres :
+
+    git switch main
+    git pull origin main
+
+Pense aussi à activer ton environnement Python avant de lancer
+Django (à faire à chaque nouvelle session de terminal) :
+
+    cd Backend
+    source env/Scripts/activate      (Git Bash)
+
+Tu dois voir (env) au début de la ligne.
+On ne recrée PAS l'environnement : on l'active simplement.
+
+
+----------------------------------------------------------------
+5.2 Créer sa branche
+----------------------------------------------------------------
+
+NE TRAVAILLE JAMAIS SUR main.
+
+Une tâche = une branche. Choisis un nom clair :
+
+    git switch -c feature/inscription-utilisateur
+
+Autres exemples de noms :
+
+    feature/creation-tontine
+    feature/cotisations
+    fix/connexion-bug
+    docs/guide-equipe
+
+Pour voir sur quelle branche tu es :
+
+    git branch
+
+
+----------------------------------------------------------------
+5.3 Coder
+----------------------------------------------------------------
+
+Travaille uniquement dans le dossier Backend/ (pour le moment).
+
+Pour voir les fichiers modifiés :
+
+    git status
+
+Toujours se placer à la racine du projet pour les commandes Git
+(le dossier qui contient Backend/ et Frontend/).
+
+
+----------------------------------------------------------------
+5.4 Enregistrer son travail (commit)
+----------------------------------------------------------------
+
+Ajouter les fichiers modifiés :
+
+    git add Backend/
+
+Vérifier ce qui va être enregistré :
+
+    git status
+
+Enregistrer avec un message clair :
+
+    git commit -m "Ajout du modèle Utilisateur"
+
+Bon message  : "Ajout du modèle Utilisateur"
+Mauvais      : "modif", "test", "aaa"
+
+Si tu t'es trompé dans le message, tu peux corriger :
+
+    git commit --amend -m "Nouveau message"
+
+
+----------------------------------------------------------------
+5.5 Envoyer sur GitHub (push)
+----------------------------------------------------------------
+
+La première fois :
+
+    git push -u origin feature/inscription-utilisateur
+
+Les fois suivantes (même branche) :
+
+    git push
+
+
+----------------------------------------------------------------
+5.6 Ouvrir une Pull Request (PR)
+----------------------------------------------------------------
+
+  1. Va sur GitHub dans le navigateur
+  2. Un bouton "Compare & pull request" apparaît
+  3. Clique dessus
+  4. Écris un titre clair
+  5. Clique sur "Create pull request"
+  6. Demande à un coéquipier de relire
+  7. Quand c'est validé : "Merge pull request"
+
+Après la fusion, tout le monde récupère le travail :
+
+    git switch main
+    git pull origin main
+
+
+================================================================
+6. RÈGLES D'OR DE L'ÉQUIPE
+================================================================
+
+  1. Jamais de travail direct sur main
+  2. Une tâche = une branche = une personne
+  3. Toujours "git pull" avant de commencer
+  4. Ne jamais faire "git push --force" sur main
+  5. Ne jamais envoyer le dossier env/ (il est déjà ignoré)
+  6. Ne jamais envoyer ses mots de passe ou tokens
+  7. Toujours vérifier avec "git status" avant de commit
+  8. En cas de doute : demander AVANT de supprimer un fichier
+  9. Se répartir les fichiers, pas seulement les dossiers
+     (ex : un sur models.py, un autre sur views.py)
+  10. Garder Django 5.2.17 : c'est la version commune de l'équipe
+
+
+================================================================
+7. TRAVAILLER À PLUSIEURS SANS SE MARCHER DESSUS
+================================================================
+
+Git ne bloque pas l'accès à un dossier : tout le monde peut
+modifier Backend/. C'est la discipline qui évite les conflits.
+
+Pour le moment (backend) :
+
+  - Se répartir les fonctionnalités :
+      Personne A : modèles + base de données
+      Personne B : vues + pages
+      Personne C : authentification
+      Personne D : tests + documentation
+
+  - Éviter de modifier le même fichier au même moment
+  - Prévenir les autres quand on commence une grosse partie
+  - Faire des commits petits et fréquents
+
+
+================================================================
+8. ERREURS FRÉQUENTES ET SOLUTIONS
+================================================================
+
+ERREUR :
+  "Please tell me who you are"
+SOLUTION :
+  Tu n'as pas configuré ton identité Git.
+  Refais l'étape 2.
+
+ERREUR :
+  "could not read Username for github.com"
+SOLUTION :
+  Git n'arrive pas à s'authentifier.
+  Crée un token (étape 3.1) et utilise-le comme mot de passe.
+
+ERREUR :
+  "Updates were rejected because ... non-fast-forward"
+SOLUTION :
+  Quelqu'un a poussé avant toi. Récupère d'abord :
+
+      git pull origin main
+
+  Puis repush.
+
+ERREUR :
+  "python n'est pas reconnu" / "python is not recognized"
+SOLUTION :
+  Python n'est pas dans le PATH.
+  Réinstalle Python en cochant "Add Python to PATH".
+
+ERREUR :
+  "Activate.ps1 cannot be loaded" (PowerShell)
+SOLUTION :
+  Ouvre PowerShell en tant qu'utilisateur et tape :
+
+      Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+  Puis réactive l'environnement.
+
+ERREUR :
+  "Permission denied (publickey)"
+SOLUTION :
+  Tu utilises une adresse SSH au lieu de HTTPS.
+  Vérifie avec :
+
+      git remote -v
+
+  La bonne adresse commence par https://
+  Si besoin :
+
+      git remote set-url origin https://github.com/wisidgh-prog/Force-N-Tontine-Django.git
+
+ERREUR :
+  "fatal: not a git repository"
+SOLUTION :
+  Tu n'es pas dans le dossier du projet.
+  Fais :
+
+      cd ~/Documents/Force-N-Tontine-Django
+
+PROBLÈME :
+  "J'ai modifié des fichiers mais git status ne les voit pas"
+SOLUTION :
+  Tu es peut-être dans un sous-dossier.
+  Remonte à la racine du projet avec :
+
+      cd ..
+
+  et vérifie avec :
+
+      git status
+
+
+================================================================
+9. AIDE-MÉMOIRE DES COMMANDES
+================================================================
+
+Voir l'état :
+    git status
+
+Voir la branche actuelle :
+    git branch
+
+Voir l'historique :
+    git log --oneline -10
+
+Se mettre à jour :
+    git switch main
+    git pull origin main
+
+Créer une branche :
+    git switch -c feature/ma-tache
+
+Changer de branche :
+    git switch nom-de-la-branche
+
+Enregistrer :
+    git add Backend/
+    git commit -m "Message clair"
+
+Envoyer :
+    git push -u origin feature/ma-tache
+
+Annuler une modification non enregistrée :
+    git restore nom_du_fichier
+
+Voir les différences :
+    git diff
+
+Vérifier la version de Django :
+    python -m django --version
+
+
+================================================================
+10. STRUCTURE DU PROJET
+================================================================
+
+Force-N-Tontine-Django/
+|
+|-- Backend/          <-- travail actuel de l'équipe
+|   |-- env/          <-- environnement Python (LOCAL, ignoré par Git)
+|   |-- manage.py     <-- arrivera quand le projet Django sera créé
+|   `-- ...
+|
+|-- Frontend/         <-- plus tard
+|
+|-- .gitignore        <-- fichiers à ne pas envoyer sur GitHub
+|-- README.md
+`-- GUIDE_EQUIPE.txt  <-- ce fichier
+
+
+================================================================
+11. QUESTIONS À SE POSER AVANT CHAQUE COMMIT
+================================================================
+
+  [ ] Suis-je sur la bonne branche ?          -> git branch
+  [ ] Ai-je récupéré le travail des autres ?  -> git pull
+  [ ] Est-ce que je n'envoie pas env/ ?       -> git status
+  [ ] Mon message de commit est-il clair ?
+  [ ] Est-ce que je n'envoie pas de secret
+      (mot de passe, token, fichier .env) ?
+
+
+================================================================
+  FIN DU GUIDE
+  En cas de blocage : demande de l'aide AVANT de faire
+  une commande que tu ne comprends pas.
+================================================================
